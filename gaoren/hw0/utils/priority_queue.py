@@ -9,8 +9,10 @@ class PriorityQueue:
         if key and initial_list:
             initial_list = [(key(item), item) for item in initial_list]
         #
-        self._queue = initial_list if initial_list else []
-        heapq.heapify(initial_list)
+        queue = initial_list if initial_list else []
+        heapq.heapify(queue)
+        #
+        self._queue = queue
         self.key = key
 
     def add(self, x):

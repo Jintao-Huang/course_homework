@@ -67,7 +67,7 @@ def search_alg(env_matrix, f: Callable[[Tuple, Tuple, float], float]) -> Optiona
     return (path, cost) if path else None
 
 
-def find_path(end_pos, parent_matrix):
+def find_path(end_pos: Tuple, parent_matrix) -> List:
     width = parent_matrix.shape[1]
     cur_pos = end_pos
     pos_path = [cur_pos]
