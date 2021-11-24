@@ -2,15 +2,17 @@
 # Email: hjt_study@qq.com
 # Date: 
 
-from typing import Callable, List, Tuple, Optional
+from typing import Callable, List, Tuple, Optional, Set
 from .environment import PointType
 from .priority_queue import PriorityQueue
 import numpy as np
+from numpy import ndarray
 
 
-def search_alg(env_matrix, f: Callable[[Tuple, Tuple, float], float]) -> Optional[Tuple]:
+def search_alg(env_matrix: ndarray, f: Callable[[Tuple, Tuple, float], float]) -> Optional[Tuple]:
     """使用欧几里得距离
 
+    :param env_matrix: shape[H, W]
     :param f: 启发式函数. [cur_pos, end_pos, cost] -> f_cost
         cost: cost from start_pos to cur_pos
         f_cost: 启发式cost
@@ -18,16 +20,16 @@ def search_alg(env_matrix, f: Callable[[Tuple, Tuple, float], float]) -> Optiona
         path: Tuple[left, top]
     """
     #
-    path = None
+    path = None  # type: Optional[List[Tuple[int, int]]]
     height, width = env_matrix.shape
     # 直线与对角线
     direction = np.array([[0, 1], [1, 0], [0, -1], [-1, 0],
                           [1, 1], [-1, 1], [-1, -1], [1, -1]])
     # Top Left!
-    start_pos = cur_pos = tuple(np.argwhere(env_matrix == PointType.START)[0].tolist())
-    end_pos = tuple(np.argwhere(env_matrix == PointType.END)[0].tolist())
+    start_pos = cur_pos = tuple(np.argwhere(env_matrix == PointType.START)[0].tolist())  # type: Tuple[int, int]
+    end_pos = tuple(np.argwhere(env_matrix == PointType.END)[0].tolist())  # type: Tuple[int, int]
     wall_pos = np.argwhere(env_matrix == PointType.WALL).tolist()
-    wall_pos = set(tuple(item) for item in wall_pos)
+    wall_pos = set(tuple(item) for item in wall_pos)  # type: Set[Tuple[int, int]]
     #
     cost_matrix = np.full_like(env_matrix, np.inf, dtype=np.float64)
     parent_matrix = np.full_like(env_matrix, -1, dtype=np.int32)  # parent: i * w + j
@@ -67,7 +69,13 @@ def search_alg(env_matrix, f: Callable[[Tuple, Tuple, float], float]) -> Optiona
     return (path, cost) if path else None
 
 
-def find_path(end_pos: Tuple, parent_matrix) -> List:
+def find_path(end_pos: Tuple[int, int], parent_matrix: ndarray) -> List[Tuple[int, int]]:
+    """
+
+    :param end_pos:
+    :param parent_matrix: shape[H, W]. no parent: = -1; else: = i * width + j
+    :return:
+    """
     width = parent_matrix.shape[1]
     cur_pos = end_pos
     pos_path = [cur_pos]
