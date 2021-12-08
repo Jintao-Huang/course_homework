@@ -11,6 +11,7 @@ from functools import partial
 def f(cur_pos: Tuple, end_pos: Tuple, pre_cost: float) -> float:
     cur_pos = np.array(cur_pos)
     end_pos = np.array(end_pos)
+    # h = np.linalg.norm(cur_pos - end_pos)  # 启发式函数
     return np.linalg.norm(cur_pos - end_pos) + pre_cost  # cur_pos 到 end_pos的欧式距离
 
 

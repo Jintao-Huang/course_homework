@@ -13,9 +13,9 @@ def search_alg(env_matrix: ndarray, f: Callable[[Tuple, Tuple, float], float]) -
     """使用欧几里得距离
 
     :param env_matrix: shape[H, W]
-    :param f: 启发式函数. [cur_pos, end_pos, cost] -> f_cost
+    :param f: 评估函数. [cur_pos, end_pos, cost] -> f_cost
         cost: cost from start_pos to cur_pos
-        f_cost: 启发式cost
+        f_cost: 评估cost
     :return: Tuple[path, cost] or None. 如果没找到 返回None.
         path: Tuple[left, top]
     """
@@ -58,7 +58,7 @@ def search_alg(env_matrix: ndarray, f: Callable[[Tuple, Tuple, float], float]) -
                 continue
             #
             cost = pre_cost + np.linalg.norm(d)  # 加上d的距离. e.g. 1 or sqrt(2)
-            if cost_matrix[pos] <= cost:
+            if cost_matrix[pos] <= cost:  # 即: 可重复访问的
                 continue
             #
             cost_matrix[pos] = cost
